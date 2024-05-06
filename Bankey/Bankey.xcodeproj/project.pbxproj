@@ -12,6 +12,7 @@
 		56298A202BE7AFB900C7A537 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56298A1F2BE7AFB900C7A537 /* Assets.xcassets */; };
 		56298A232BE7AFB900C7A537 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 56298A222BE7AFB900C7A537 /* Base */; };
 		56298A2D2BE7B64D00C7A537 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56298A2C2BE7B64D00C7A537 /* LoginView.swift */; };
+		56298A302BE9741700C7A537 /* OnboardingContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56298A2F2BE9741700C7A537 /* OnboardingContainerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		56298A222BE7AFB900C7A537 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		56298A242BE7AFB900C7A537 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		56298A2C2BE7B64D00C7A537 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		56298A2F2BE9741700C7A537 /* OnboardingContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingContainerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,7 @@
 		56298A152BE7AFB800C7A537 /* Bankey */ = {
 			isa = PBXGroup;
 			children = (
+				56298A2E2BE973DC00C7A537 /* Onboarding */,
 				56298A2A2BE7B4C200C7A537 /* Files */,
 				56298A2B2BE7B61C00C7A537 /* Login */,
 				56298A162BE7AFB800C7A537 /* AppDelegate.swift */,
@@ -78,6 +81,14 @@
 				56298A2C2BE7B64D00C7A537 /* LoginView.swift */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		56298A2E2BE973DC00C7A537 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				56298A2F2BE9741700C7A537 /* OnboardingContainerViewController.swift */,
+			);
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -153,6 +164,7 @@
 				56298A2D2BE7B64D00C7A537 /* LoginView.swift in Sources */,
 				56298A1B2BE7AFB800C7A537 /* LoginViewController.swift in Sources */,
 				56298A172BE7AFB800C7A537 /* AppDelegate.swift in Sources */,
+				56298A302BE9741700C7A537 /* OnboardingContainerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
