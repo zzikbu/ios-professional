@@ -14,6 +14,7 @@
 		56298A2D2BE7B64D00C7A537 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56298A2C2BE7B64D00C7A537 /* LoginView.swift */; };
 		56298A302BE9741700C7A537 /* OnboardingContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56298A2F2BE9741700C7A537 /* OnboardingContainerViewController.swift */; };
 		56298A322BE97AED00C7A537 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56298A312BE97AED00C7A537 /* OnboardingViewController.swift */; };
+		56298A3C2BEE335A00C7A537 /* DummyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56298A3B2BEE335A00C7A537 /* DummyViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		56298A2C2BE7B64D00C7A537 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		56298A2F2BE9741700C7A537 /* OnboardingContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingContainerViewController.swift; sourceTree = "<group>"; };
 		56298A312BE97AED00C7A537 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		56298A3B2BEE335A00C7A537 /* DummyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 			children = (
 				56298A1A2BE7AFB800C7A537 /* LoginViewController.swift */,
 				56298A2C2BE7B64D00C7A537 /* LoginView.swift */,
+				56298A3B2BEE335A00C7A537 /* DummyViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -165,6 +168,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				56298A2D2BE7B64D00C7A537 /* LoginView.swift in Sources */,
+				56298A3C2BEE335A00C7A537 /* DummyViewController.swift in Sources */,
 				56298A1B2BE7AFB800C7A537 /* LoginViewController.swift in Sources */,
 				56298A322BE97AED00C7A537 /* OnboardingViewController.swift in Sources */,
 				56298A172BE7AFB800C7A537 /* AppDelegate.swift in Sources */,

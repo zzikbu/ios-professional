@@ -7,8 +7,14 @@
 
 import UIKit
 
-class OnboardingContainerViewController: UIViewController {
+protocol OnboardingContainerViewControllerDelegate: AnyObject {
+    func didFinishOnboarding()
+}
 
+class OnboardingContainerViewController: UIViewController {
+    
+    weak var delegate: OnboardingContainerViewControllerDelegate?
+    
     let pageViewController: UIPageViewController
     var pages = [UIViewController]()
     var currentVC: UIViewController
@@ -122,6 +128,6 @@ extension OnboardingContainerViewController: UIPageViewControllerDataSource {
 // MARK: - Actions
 extension OnboardingContainerViewController {
     @objc func closeTapped(_ sender: UIButton) {
-        print("닫기 버튼 눌림")
+        delegate?.didFinishOnboarding()
     }
 }
