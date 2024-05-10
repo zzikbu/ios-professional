@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol LoginViewControllerDelegate: AnyObject { // 클래스 타입만
+    func didLogin()
+}
+
 class LoginViewController: UIViewController {
     
     let titleLabel = UILabel()
@@ -14,6 +18,8 @@ class LoginViewController: UIViewController {
     let loginView = LoginView()
     let signInButton = UIButton(type: .system)
     let errorMessageLabel = UILabel()
+    
+    weak var delegate: LoginViewControllerDelegate?
     
     var username: String? { // getter
         return loginView.usernameTextField.text
@@ -123,6 +129,7 @@ extension LoginViewController {
         
         if username == "moichi" && password == "moichi" {
             signInButton.configuration?.showsActivityIndicator = true // 회전 표시
+            delegate?.didLogin()
         } else {
             configureView(withMessage: "Incorrect username / password")
         }
