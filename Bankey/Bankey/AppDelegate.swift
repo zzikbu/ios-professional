@@ -12,8 +12,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     
-    var hasOnboarded = false // 온보딩 실행 여부
-    
     let loginViewController = LoginViewController()
     let onboardingContainerViewController = OnboardingContainerViewController()
     let dummyViewController = DummyViewController()
@@ -39,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate: LoginViewControllerDelegate {
     func didLogin() {
-        if hasOnboarded {
+        if LocalState.hasOnboarded {
             setRootViewController(dummyViewController)
         } else {
             setRootViewController(onboardingContainerViewController)
@@ -50,7 +48,7 @@ extension AppDelegate: LoginViewControllerDelegate {
 extension AppDelegate: OnboardingContainerViewControllerDelegate {
     func didFinishOnboarding() {
         print("foo - 온보딩 종료")
-        self.hasOnboarded = true
+        LocalState.hasOnboarded = true
         setRootViewController(dummyViewController)
     }
 }
