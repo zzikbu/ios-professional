@@ -26,6 +26,7 @@ class AccountSummaryViewController: UIViewController {
 extension AccountSummaryViewController {
     private func setup() {
         setupTableView()
+        setupTableHeaderView()
     }
     
     private func setupTableView() {
@@ -41,6 +42,16 @@ extension AccountSummaryViewController {
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+    }
+    
+    private func setupTableHeaderView() { // 테이블뷰 헤더 설정
+        let header = AccountSummaryHeaderView(frame: .zero) // 크기 없이 인스턴스화
+        
+        var size = header.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize) // 테이블 뷰 헤더의 적절한 크기 설정
+        size.width = UIScreen.main.bounds.width
+        header.frame.size = size
+        
+        tableView.tableHeaderView = header
     }
 }
 
