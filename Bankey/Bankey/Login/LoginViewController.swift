@@ -178,13 +178,25 @@ extension LoginViewController {
     private func configureView(withMessage message: String) {
         errorMessageLabel.isHidden = false
         errorMessageLabel.text = message
+        shakeButton()
+    }
+    
+    private func shakeButton() {
+        let animation = CAKeyframeAnimation()
+        animation.keyPath = "position.x"
+        animation.values = [0, 10, -10, 10, 0] // 버튼의 x 좌표를 이동할 값들을 설정 (흔드는 효과)
+        animation.keyTimes = [0, 0.16, 0.5, 0.83, 1] // 애니메이션의 각 단계에 해당하는 시간
+        animation.duration = 0.4 // 지속 시간
+
+        animation.isAdditive = true // // 애니메이션을 절대 좌표 대신 상대 좌표로 처리하도록 설정
+        signInButton.layer.add(animation, forKey: "shake")
     }
 }
 
 // MARK: - 애니메이션
 extension LoginViewController {
     private func animate() {
-        let duration = 2.0
+        let duration = 0.7
         
         let animator1 = UIViewPropertyAnimator(duration: duration, curve: .easeInOut) {
             self.titleLeadingAnchor?.constant = self.leadingEdgeOnScreen
