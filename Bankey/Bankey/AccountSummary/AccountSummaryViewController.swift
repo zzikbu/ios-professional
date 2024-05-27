@@ -12,9 +12,24 @@ class AccountSummaryViewController: UIViewController {
     var accounts: [AccountSummaryCell.ViewModel] = []
     var tableView = UITableView()
     
+    lazy var logoutBarButtonItem: UIBarButtonItem = {
+        let barButtonItem = UIBarButtonItem(title: "로그아웃",
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(logoutTapped))
+        barButtonItem.tintColor = .label // 라이트, 다크모드에 따라 다이내믹 색상
+        return barButtonItem
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setup()
+        setupNavigationBar()
+    }
+    
+    func setupNavigationBar() {
+        navigationItem.rightBarButtonItem = logoutBarButtonItem
     }
 }
 
@@ -85,7 +100,7 @@ extension AccountSummaryViewController {
                                                             accountName: "Basic Savings",
                                                         balance: 929466.23)
         let chequing = AccountSummaryCell.ViewModel(accountType: .Banking,
-                                                    accountName: "No-Fee All-In Chequing",
+                                                    accountName: "No-Fee All-In Chequinggggggggg",
                                                     balance: 17562.44)
         let visa = AccountSummaryCell.ViewModel(accountType: .CreditCard,
                                                        accountName: "Visa Avion Card",
@@ -106,5 +121,13 @@ extension AccountSummaryViewController {
         accounts.append(masterCard)
         accounts.append(investment1)
         accounts.append(investment2)
+    }
+}
+
+// MARK: Actions
+extension AccountSummaryViewController {
+    // NotificationCenter를 통해 'logout' 알림을 게시
+    @objc func logoutTapped(sender: UIButton) {
+        NotificationCenter.default.post(name: .logout, object: nil)
     }
 }

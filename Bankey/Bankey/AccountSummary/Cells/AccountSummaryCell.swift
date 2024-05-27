@@ -66,10 +66,12 @@ extension AccountSummaryCell {
         nameLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
         nameLabel.font = UIFont.preferredFont(forTextStyle: .body)
         nameLabel.text = "Account name"
+        nameLabel.adjustsFontSizeToFitWidth = true // 텍스트가 짤릴 때 폰트 크기를 줄임
         
         balanceStackView.translatesAutoresizingMaskIntoConstraints = false
         balanceStackView.axis = .vertical // 수직
         balanceStackView.spacing = 0
+        balanceLabel.adjustsFontSizeToFitWidth = true // 텍스트가 짤릴 때 폰트 크기를 줄임
 
         balanceLabel.translatesAutoresizingMaskIntoConstraints = false
         balanceLabel.font = UIFont.preferredFont(forTextStyle: .body)
