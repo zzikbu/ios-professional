@@ -19,7 +19,7 @@ class AccountSummaryCell: UITableViewCell {
     let chevronImageView = UIImageView()
 
     static let reuseID = "AccountSummaryCell"
-    static let rowHeight: CGFloat = 100
+    static let rowHeight: CGFloat = 112
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -59,7 +59,8 @@ extension AccountSummaryCell {
 
         balanceAmountLabel.translatesAutoresizingMaskIntoConstraints = false
         balanceAmountLabel.textAlignment = .right
-        balanceAmountLabel.text = "$929,466.63"
+//        balanceAmountLabel.text = "$929,466.63"
+        balanceAmountLabel.attributedText = makeFormattedBalance(dollars: "929,466", cents: "23") // 글꼴 변경 함수 사용 .text가 아닌 .attributedText
         
         chevronImageView.translatesAutoresizingMaskIntoConstraints = false
         let chevronImage = UIImage(systemName: "chevron.right")!.withTintColor(appColor, renderingMode: .alwaysOriginal)
@@ -98,5 +99,32 @@ extension AccountSummaryCell {
             chevronImageView.topAnchor.constraint(equalToSystemSpacingBelow: underlineView.bottomAnchor, multiplier: 1),
             trailingAnchor.constraint(equalToSystemSpacingAfter: chevronImageView.trailingAnchor, multiplier: 1)
         ])
+    }
+    
+    // 달러, 센트 글씨 스타일 다르게 적용
+    private func makeFormattedBalance(dollars: String, cents: String) -> NSMutableAttributedString {
+        let dollarSignAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.preferredFont(forTextStyle: .callout),  // 글씨 작게
+            .baselineOffset: 8 // 베이스라인 위로 8포인트 글자 올리기
+        ]
+        
+        let dollarAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.preferredFont(forTextStyle: .title1) // 글씨 크게
+        ]
+        
+        let centAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.preferredFont(forTextStyle: .footnote), // 글씨 작게
+            .baselineOffset: 8 // 베이스라인 위로 8포인트 글자 올리기
+        ]
+        
+        let rootString = NSMutableAttributedString(string: "$", attributes: dollarSignAttributes)
+        let dollarString = NSAttributedString(string: dollars, attributes: dollarAttributes)
+        let centString = NSAttributedString(string: cents, attributes: centAttributes)
+        
+        // 문자열 추가
+        rootString.append(dollarString)
+        rootString.append(centString)
+        
+        return rootString
     }
 }
