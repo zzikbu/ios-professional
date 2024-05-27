@@ -18,6 +18,11 @@ class AccountSummaryCell: UITableViewCell {
     struct ViewModel {
         let accountType: AccountType
         let accountName: String
+        let balance: Decimal // 십진법
+        
+        var balanceAsAttributedString: NSAttributedString {
+            return CurrencyFormatter().makeAttributedCurrency(balance)
+        }
     }
     
     let viewModel: ViewModel? = nil
@@ -28,7 +33,7 @@ class AccountSummaryCell: UITableViewCell {
     
     let balanceStackView = UIStackView() // 스택뷰
     let balanceLabel = UILabel()
-    let balanceAmountLabel = UILabel()
+    let balanceAmountLabel = UILabel() // 잔액
     
     let chevronImageView = UIImageView()
 
@@ -74,7 +79,7 @@ extension AccountSummaryCell {
         balanceAmountLabel.translatesAutoresizingMaskIntoConstraints = false
         balanceAmountLabel.textAlignment = .right
 //        balanceAmountLabel.text = "$929,466.63"
-        balanceAmountLabel.attributedText = makeFormattedBalance(dollars: "929,466", cents: "23") // 글꼴 변경 함수 사용 .text가 아닌 .attributedText
+        balanceAmountLabel.attributedText = makeFormattedBalance(dollars: "XXX,XXX", cents: "XX") // 글꼴 변경 함수 사용 .text가 아닌 .attributedText
         
         chevronImageView.translatesAutoresizingMaskIntoConstraints = false
         let chevronImage = UIImage(systemName: "chevron.right")!.withTintColor(appColor, renderingMode: .alwaysOriginal)
@@ -148,6 +153,7 @@ extension AccountSummaryCell {
         
         typeLabel.text = vm.accountType.rawValue // 원시 값
         nameLabel.text = vm.accountName
+        balanceAmountLabel.attributedText = vm.balanceAsAttributedString
         
         switch vm.accountType { // 값에 따라서 처리
         case .Banking:
