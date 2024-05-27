@@ -162,12 +162,12 @@ extension LoginViewController {
             return
         }
         
-        if username.isEmpty || password.isEmpty {
-            configureView(withMessage: "Username / password cannot be blank")
-            return
-        }
+//        if username.isEmpty || password.isEmpty {
+//            configureView(withMessage: "Username / password cannot be blank")
+//            return
+//        }
         
-        if username == "moichi" && password == "moichi" {
+        if username == "" && password == "" {
             signInButton.configuration?.showsActivityIndicator = true // 회전 표시
             delegate?.didLogin()
         } else {
