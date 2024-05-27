@@ -26,6 +26,8 @@ extension AccountSummaryViewController {
     }
     
     private func setupTableView() {
+        tableView.backgroundColor = appColor // 풀다운시 뒷배경 흰색 해결
+        
         tableView.delegate = self
         tableView.dataSource = self
         
