@@ -17,8 +17,10 @@ class AccountSummaryViewController: UIViewController {
     var headerViewModel = AccountSummaryHeaderView.ViewModel(welcomeMessage: "Welcome", name: "", date: Date())
     var accountCellViewModels: [AccountSummaryCell.ViewModel] = []
     
+    // Components
     var tableView = UITableView()
     let headerView = AccountSummaryHeaderView(frame: .zero) // 크기 없이 인스턴스화
+    let refreshControl = UIRefreshControl()
     
     lazy var logoutBarButtonItem: UIBarButtonItem = {
         let barButtonItem = UIBarButtonItem(title: "로그아웃",
@@ -41,6 +43,7 @@ extension AccountSummaryViewController {
         setupNavigationBar()
         setupTableView()
         setupTableHeaderView()
+        setupRefreshControl()
         fetchData()
     }
     
@@ -76,6 +79,12 @@ extension AccountSummaryViewController {
         
         tableView.tableHeaderView = headerView
     }
+    
+    private func setupRefreshControl() { // 새로고침
+        refreshControl.tintColor = appColor
+        refreshControl.addTarget(self, action: #selector(refreshContent), for: .valueChanged)
+        tableView.refreshControl = refreshControl
+    }
 }
 
 extension AccountSummaryViewController: UITableViewDataSource {
@@ -100,21 +109,15 @@ extension AccountSummaryViewController: UITableViewDelegate {
     }
 }
 
-// MARK: Actions
-extension AccountSummaryViewController {
-    // NotificationCenter를 통해 'logout' 알림을 게시
-    @objc func logoutTapped(sender: UIButton) {
-        NotificationCenter.default.post(name: .logout, object: nil)
-    }
-}
-
 // MARK: - Networking
 extension AccountSummaryViewController {
     private func fetchData() {
         let group = DispatchGroup() // 비동기 작업 그룹 생성
         
+        let userId = String(Int.random(in: 1..<4)) // 새로고침 테스트를 위한 변수
+        
         group.enter() // 그룹에 작업 추가
-        fetchProfile(forUserId: "1") { result in
+        fetchProfile(forUserId: userId) { result in
             switch result {
             case .success(let profile):
                 self.profile = profile
@@ -127,7 +130,7 @@ extension AccountSummaryViewController {
         }
         
         group.enter()
-        fetchAccounts(forUserId: "1") { result in
+        fetchAccounts(forUserId: userId) { result in
             switch result {
             case .success(let accounts):
                 self.accounts = accounts
@@ -142,6 +145,7 @@ extension AccountSummaryViewController {
         // 모든 비동기 작업이 완료되면 호출
         group.notify(queue: .main) {
             self.tableView.reloadData()
+            self.tableView.refreshControl?.endRefreshing() // 새로고침 종료
         }
     }
     
@@ -158,5 +162,18 @@ extension AccountSummaryViewController {
                                          accountName: $0.name,
                                          balance: $0.amount)
         }
+    }
+}
+
+// MARK: Actions
+extension AccountSummaryViewController {
+    // NotificationCenter를 통해 'logout' 알림을 게시
+    @objc func logoutTapped(sender: UIButton) {
+        NotificationCenter.default.post(name: .logout, object: nil)
+    }
+    
+    // 새로고침
+    @objc func refreshContent() {
+        fetchData()
     }
 }
