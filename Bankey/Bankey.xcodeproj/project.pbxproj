@@ -28,6 +28,8 @@
 		566C61A42C04EB48006BEE37 /* NSNotificationName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566C61A32C04EB48006BEE37 /* NSNotificationName.swift */; };
 		566C61A62C04ED97006BEE37 /* UITextField+SecureToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566C61A52C04ED96006BEE37 /* UITextField+SecureToggle.swift */; };
 		566C61A92C050225006BEE37 /* ShakeyBellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566C61A82C050225006BEE37 /* ShakeyBellView.swift */; };
+		5697E0AC2C214AA10044A12A /* ProfileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5697E0AB2C214AA10044A12A /* ProfileTests.swift */; };
+		5697E0AE2C214BA30044A12A /* AccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5697E0AD2C214BA30044A12A /* AccountTests.swift */; };
 		569D17AD2C2063A00025F41B /* Data+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569D17AC2C2063A00025F41B /* Data+Utils.swift */; };
 		569D17AF2C2066560025F41B /* AccountSummaryViewController+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569D17AE2C2066560025F41B /* AccountSummaryViewController+Networking.swift */; };
 /* End PBXBuildFile section */
@@ -67,6 +69,8 @@
 		566C61A32C04EB48006BEE37 /* NSNotificationName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSNotificationName.swift; sourceTree = "<group>"; };
 		566C61A52C04ED96006BEE37 /* UITextField+SecureToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+SecureToggle.swift"; sourceTree = "<group>"; };
 		566C61A82C050225006BEE37 /* ShakeyBellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShakeyBellView.swift; sourceTree = "<group>"; };
+		5697E0AB2C214AA10044A12A /* ProfileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTests.swift; sourceTree = "<group>"; };
+		5697E0AD2C214BA30044A12A /* AccountTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTests.swift; sourceTree = "<group>"; };
 		569D17AC2C2063A00025F41B /* Data+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Utils.swift"; sourceTree = "<group>"; };
 		569D17AE2C2066560025F41B /* AccountSummaryViewController+Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountSummaryViewController+Networking.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -196,7 +200,8 @@
 		566C61992C04A012006BEE37 /* BankeyUnitTests */ = {
 			isa = PBXGroup;
 			children = (
-				566C61A12C04A0EB006BEE37 /* CurrencyFormatterTests.swift */,
+				5697E0AA2C214A790044A12A /* AccountSummary */,
+				5697E0A92C214A610044A12A /* Utils */,
 			);
 			path = BankeyUnitTests;
 			sourceTree = "<group>";
@@ -207,6 +212,23 @@
 				566C61A82C050225006BEE37 /* ShakeyBellView.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		5697E0A92C214A610044A12A /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				566C61A12C04A0EB006BEE37 /* CurrencyFormatterTests.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		5697E0AA2C214A790044A12A /* AccountSummary */ = {
+			isa = PBXGroup;
+			children = (
+				5697E0AB2C214AA10044A12A /* ProfileTests.swift */,
+				5697E0AD2C214BA30044A12A /* AccountTests.swift */,
+			);
+			path = AccountSummary;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -338,6 +360,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				566C61A22C04A0EB006BEE37 /* CurrencyFormatterTests.swift in Sources */,
+				5697E0AE2C214BA30044A12A /* AccountTests.swift in Sources */,
+				5697E0AC2C214AA10044A12A /* ProfileTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
