@@ -22,6 +22,8 @@ class AccountSummaryViewController: UIViewController {
     let headerView = AccountSummaryHeaderView(frame: .zero) // 크기 없이 인스턴스화
     let refreshControl = UIRefreshControl()
     
+    var isLoaded = false // 데이터를 가져왔는지 여부
+    
     lazy var logoutBarButtonItem: UIBarButtonItem = {
         let barButtonItem = UIBarButtonItem(title: "로그아웃",
                                             style: .plain,
@@ -44,6 +46,7 @@ extension AccountSummaryViewController {
         setupTableView()
         setupTableHeaderView()
         setupRefreshControl()
+        setupSkeletons()
         fetchData()
     }
     
@@ -58,6 +61,7 @@ extension AccountSummaryViewController {
         tableView.dataSource = self
         
         tableView.register(AccountSummaryCell.self, forCellReuseIdentifier: AccountSummaryCell.reuseID) // 셀 등록
+        tableView.register(SkeletonCell.self, forCellReuseIdentifier: SkeletonCell.reuseID) // 스켈레톤 셀 등록
         tableView.rowHeight = AccountSummaryCell.rowHeight // 높이
         tableView.tableFooterView = UIView() // FooterView는 공백으로
         
@@ -85,21 +89,32 @@ extension AccountSummaryViewController {
         refreshControl.addTarget(self, action: #selector(refreshContent), for: .valueChanged)
         tableView.refreshControl = refreshControl
     }
+    
+    private func setupSkeletons() { // 스켈레톤 설정
+        let row = Account.makeSkeleton()
+        accounts = Array(repeating: row, count: 10)
+        
+        configureTableCells(with: accounts)
+    }
 }
 
 extension AccountSummaryViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard !accountCellViewModels.isEmpty else { return UITableViewCell() }
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: AccountSummaryCell.reuseID, for: indexPath) as! AccountSummaryCell
-        let account = accountCellViewModels[indexPath.row]
-        cell.configure(with: account)
-        
-        return cell
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return accountCellViewModels.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard !accountCellViewModels.isEmpty else { return UITableViewCell() }
+        let account = accountCellViewModels[indexPath.row]
+        
+        if isLoaded {
+            let cell = tableView.dequeueReusableCell(withIdentifier: AccountSummaryCell.reuseID, for: indexPath) as! AccountSummaryCell
+            cell.configure(with: account)
+            return cell
+        }
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: SkeletonCell.reuseID, for: indexPath) as! SkeletonCell
+        return cell
     }
 }
 
@@ -121,7 +136,7 @@ extension AccountSummaryViewController {
             switch result {
             case .success(let profile):
                 self.profile = profile
-                self.configureTableHeaderView(with: profile)
+//                self.configureTableHeaderView(with: profile)
 //                self.tableView.reloadData()
             case .failure(let error):
                 print(error.localizedDescription)
@@ -134,7 +149,7 @@ extension AccountSummaryViewController {
             switch result {
             case .success(let accounts):
                 self.accounts = accounts
-                self.configureTableCells(with: accounts)
+//                self.configureTableCells(with: accounts)
 //                self.tableView.reloadData()
             case .failure(let error):
                 print(error.localizedDescription)
@@ -144,8 +159,14 @@ extension AccountSummaryViewController {
         
         // 모든 비동기 작업이 완료되면 호출
         group.notify(queue: .main) {
+            self.tableView.refreshControl?.endRefreshing()
+            
+            guard let profile = self.profile else { return }
+            
+            self.isLoaded = true
+            self.configureTableHeaderView(with: profile) //
+            self.configureTableCells(with: self.accounts) //
             self.tableView.reloadData()
-            self.tableView.refreshControl?.endRefreshing() // 새로고침 종료
         }
     }
     
@@ -174,6 +195,15 @@ extension AccountSummaryViewController {
     
     // 새로고침
     @objc func refreshContent() {
+        reset()
+        setupSkeletons()
+        tableView.reloadData()
         fetchData()
+    }
+    
+    private func reset() {
+        profile = nil
+        accounts = []
+        isLoaded = false
     }
 }
