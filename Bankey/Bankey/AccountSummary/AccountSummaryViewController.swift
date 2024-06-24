@@ -139,7 +139,7 @@ extension AccountSummaryViewController {
 //                self.configureTableHeaderView(with: profile)
 //                self.tableView.reloadData()
             case .failure(let error):
-                print(error.localizedDescription)
+                self.displayError(error)
             }
             group.leave() // 작업 완료 알림
         }
@@ -183,6 +183,30 @@ extension AccountSummaryViewController {
                                          accountName: $0.name,
                                          balance: $0.amount)
         }
+    }
+    
+    private func displayError(_ error: NetworkError) {
+        let title: String
+        let message: String
+        switch error {
+        case .serverError:
+            title = "서버 오류"
+            message = "인터넷에 연결되었는지 확인하십시오. 다시 시도하십시오."
+        case .decodingError:
+            title = "디코딩 오류"
+            message = "요청을 처리할 수 없습니다. 다시 시도하십시오."
+        }
+        self.showErrorAlert(title: title, message: message)
+    }
+    
+    private func showErrorAlert(title: String, message: String) { // 경고 팝업
+        let alert = UIAlertController(title: title,
+                                      message: message,
+                                      preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        
+        present(alert, animated: true, completion: nil)
     }
 }
 
