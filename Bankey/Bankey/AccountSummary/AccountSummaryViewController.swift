@@ -22,6 +22,16 @@ class AccountSummaryViewController: UIViewController {
     let headerView = AccountSummaryHeaderView(frame: .zero) // 크기 없이 인스턴스화
     let refreshControl = UIRefreshControl()
     
+    // Networking
+    var profileManager: ProfileManageable = ProfileManager()
+    
+    // Error alert
+    lazy var errorAlert: UIAlertController = {
+        let alert =  UIAlertController(title: "", message: "", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        return alert
+    }()
+    
     var isLoaded = false // 데이터를 가져왔는지 여부
     
     lazy var logoutBarButtonItem: UIBarButtonItem = {
@@ -127,47 +137,54 @@ extension AccountSummaryViewController: UITableViewDelegate {
 // MARK: - Networking
 extension AccountSummaryViewController {
     private func fetchData() {
-        let group = DispatchGroup() // 비동기 작업 그룹 생성
+        let group = DispatchGroup()
         
-        let userId = String(Int.random(in: 1..<4)) // 새로고침 테스트를 위한 변수
+        // Testing - random number selection
+        let userId = String(Int.random(in: 1..<4))
         
-        group.enter() // 그룹에 작업 추가
-        fetchProfile(forUserId: userId) { result in
+        fetchProfile(group: group, userId: userId)
+        fetchAccounts(group: group, userId: userId)
+        
+        group.notify(queue: .main) {
+            self.reloadView()
+        }
+    }
+    
+    private func fetchProfile(group: DispatchGroup, userId: String) {
+        group.enter()
+        profileManager.fetchProfile(forUserId: userId) { result in
             switch result {
             case .success(let profile):
                 self.profile = profile
-//                self.configureTableHeaderView(with: profile)
-//                self.tableView.reloadData()
             case .failure(let error):
                 self.displayError(error)
             }
-            group.leave() // 작업 완료 알림
+            group.leave()
         }
-        
+    }
+    
+    private func fetchAccounts(group: DispatchGroup, userId: String) {
         group.enter()
         fetchAccounts(forUserId: userId) { result in
             switch result {
             case .success(let accounts):
                 self.accounts = accounts
-//                self.configureTableCells(with: accounts)
-//                self.tableView.reloadData()
             case .failure(let error):
-                print(error.localizedDescription)
+                self.displayError(error)
             }
             group.leave()
         }
+    }
+    
+    private func reloadView() {
+        self.tableView.refreshControl?.endRefreshing()
         
-        // 모든 비동기 작업이 완료되면 호출
-        group.notify(queue: .main) {
-            self.tableView.refreshControl?.endRefreshing()
-            
-            guard let profile = self.profile else { return }
-            
-            self.isLoaded = true
-            self.configureTableHeaderView(with: profile) //
-            self.configureTableCells(with: self.accounts) //
-            self.tableView.reloadData()
-        }
+        guard let profile = self.profile else { return }
+        
+        self.isLoaded = true
+        self.configureTableHeaderView(with: profile)
+        self.configureTableCells(with: self.accounts)
+        self.tableView.reloadData()
     }
     
     private func configureTableHeaderView(with profile: Profile) {
@@ -186,27 +203,35 @@ extension AccountSummaryViewController {
     }
     
     private func displayError(_ error: NetworkError) {
+        let titleAndMessage = titleAndMessage(for: error)
+        self.showErrorAlert(title: titleAndMessage.0, message: titleAndMessage.1)
+    }
+
+    private func titleAndMessage(for error: NetworkError) -> (String, String) {
         let title: String
         let message: String
         switch error {
         case .serverError:
             title = "서버 오류"
-            message = "인터넷에 연결되었는지 확인하십시오. 다시 시도하십시오."
-        case .decodingError:
-            title = "디코딩 오류"
             message = "요청을 처리할 수 없습니다. 다시 시도하십시오."
+        case .decodingError:
+            title = "네트워크 오류"
+            message = "인터넷에 연결되었는지 확인하십시오. 다시 시도하십시오."
         }
-        self.showErrorAlert(title: title, message: message)
+        return (title, message)
     }
     
     private func showErrorAlert(title: String, message: String) { // 경고 팝업
-        let alert = UIAlertController(title: title,
-                                      message: message,
-                                      preferredStyle: .alert)
+//        let alert = UIAlertController(title: title,
+//                                      message: message,
+//                                      preferredStyle: .alert)
+//        
+//        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
         
-        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        errorAlert.title = title
+        errorAlert.message = message
         
-        present(alert, animated: true, completion: nil)
+        present(errorAlert, animated: true, completion: nil)
     }
 }
 
@@ -229,5 +254,17 @@ extension AccountSummaryViewController {
         profile = nil
         accounts = []
         isLoaded = false
+    }
+}
+
+// MARK: Unit testing
+extension AccountSummaryViewController {
+    // 테스트하기 어려운 경우에 사용
+    func titleAndMessageForTesting(for error: NetworkError) -> (String, String) {
+            return titleAndMessage(for: error)
+    }
+    
+    func forceFetchProfile() {
+        fetchProfile(group: DispatchGroup(), userId: "1")
     }
 }
